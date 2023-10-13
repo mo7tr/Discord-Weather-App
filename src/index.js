@@ -1,14 +1,24 @@
 require("dotenv").config();
 
-const { Client, Events, GatewayIntentBits } = require("discord.js");
+const { Client, Collection, Events, GatewayIntentBits } = require("discord.js");
+
+const { clientReadyHandler } = require("./events/clientReady");
+const { interactionCreateHandler } = require("./events/interactionCreate");
+
+const pingCommand = require("./commands/ping");
 
 const client = new Client({
-  // Guilds are kinde of server for discord
+  // Guilds are kind of server for discord
   intents: [GatewayIntentBits.Guilds],
 });
 
-client.on(Events.ClientReady, () => {
-  console.log("Logged In!");
-});
+//Collection() is of type Map
+client.commands = new Collection();
+
+client.commands.set(pingCommand.data.name, pingCommand);
+
+client.once(Events.ClientReady, clientReadyHandler);
+
+client.on(Events.InteractionCreate, interactionCreateHandler);
 
 client.login();

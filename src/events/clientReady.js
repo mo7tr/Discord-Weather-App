@@ -1,13 +1,9 @@
 const { REST, Routes } = require("discord.js");
 
-const { fetchForecast } = require("../requests/forecast.js");
-
 const rest = new REST({ version: "10" }).setToken(process.env.DISCORD_TOKEN);
 
 async function clientReadyHandler(client) {
   console.log(`Logged in as ${client.user.tag}!`);
-
-  console.log(await fetchForecast("Cracovie"));
 
   try {
     console.log(`Started refreshing ${client.commands.size} commands!`);
